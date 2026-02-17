@@ -23,11 +23,18 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        // Generate a first and last name to create a realistic username
+        $firstName = fake()->firstName();
+        $lastName = fake()->lastName();
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'first_name' => $firstName,
+            'last_name'  => $lastName,
+            'username'   => strtolower($firstName . '.' . $lastName . fake()->numberBetween(1, 99)),
+            'about'      => fake()->sentence(10),
+            'email'      => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password'   => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
     }
